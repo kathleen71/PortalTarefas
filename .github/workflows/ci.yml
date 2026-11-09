@@ -1,0 +1,66 @@
+name: CI - PortalTarefas
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: PortalTarefas/PortalTarefas.Frontend/package-lock.json
+
+      - name: Restaurar API
+        run: dotnet restore PortalTarefas/PortalTarefas.Web/PortalTarefas.Web.csproj
+
+      - name: Compilar API
+        run: dotnet build PortalTarefas/PortalTarefas.Web/PortalTarefas.Web.csproj -c Release --no-restore
+
+      - name: Instalar dependencias do frontend
+        working-directory: PortalTarefas/PortalTarefas.Frontend
+        run: npm ci
+
+      - name: Verificar qualidade do frontend
+        working-directory: PortalTarefas/PortalTarefas.Frontend
+        run: npm run lint
+
+      - name: Compilar frontend
+        working-directory: PortalTarefas/PortalTarefas.Frontend
+        run: npm run build
+
+      - name: Preparar publicacao da API
+        run: dotnet publish PortalTarefas/PortalTarefas.Web/PortalTarefas.Web.csproj -c Release -o artifacts/api --no-restore
+
+      - name: Preparar artefatos do frontend
+        run: |
+          mkdir -p artifacts/frontend
+          cp -r PortalTarefas/PortalTarefas.Frontend/dist/. artifacts/frontend/
+
+      - name: Construir imagem Docker
+        run: docker build -t portaltarefas-api:${{ github.sha }} PortalTarefas/PortalTarefas.Web
+
+      - name: Exportar imagem Docker
+        run: docker save portaltarefas-api:${{ github.sha }} -o artifacts/portaltarefas-api.tar
+
+      - name: Publicar artefatos
+        uses: actions/upload-artifact@v4
+        with:
+          name: portaltarefas-${{ github.sha }}
+          path: artifacts/
+          if-no-files-found: error

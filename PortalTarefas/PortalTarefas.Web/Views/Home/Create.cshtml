@@ -1,0 +1,34 @@
+@model TarefaInputModel
+
+@{
+    ViewData["Title"] = "Nova tarefa";
+}
+
+<h2>Nova tarefa</h2>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="erro"></div>
+
+    <label asp-for="Titulo">Título</label>
+    <input asp-for="Titulo" />
+    <span asp-validation-for="Titulo" class="erro"></span>
+
+    <label asp-for="Descricao">Descrição</label>
+    <textarea asp-for="Descricao"></textarea>
+    <span asp-validation-for="Descricao" class="erro"></span>
+
+    <label asp-for="Prioridade">Prioridade</label>
+    <select asp-for="Prioridade">
+        <option value="1">Baixa</option>
+        <option value="2">Média</option>
+        <option value="3">Alta</option>
+    </select>
+    <span asp-validation-for="Prioridade" class="erro"></span>
+
+    <label asp-for="Prazo">Prazo</label>
+    <input asp-for="Prazo" type="date" />
+    <span asp-validation-for="Prazo" class="erro"></span>
+
+    <button type="submit">Salvar tarefa</button>
+    <a asp-action="Index">Voltar</a>
+</form>

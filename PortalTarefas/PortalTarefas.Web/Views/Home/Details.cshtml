@@ -1,0 +1,17 @@
+@model Tarefa
+
+@{
+    ViewData["Title"] = "Detalhes da tarefa";
+}
+
+<h2>Detalhes da tarefa</h2>
+
+<div>
+    <p><strong>Código:</strong> @Model.Id</p>
+    <p><strong>Título:</strong> @Model.Titulo</p>
+    <p><strong>Descrição:</strong> @Model.Descricao</p>
+    <p><strong>Situação:</strong> @Model.Situacao</p>
+</div>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="botao">Editar</a>
+<a asp-action="Index">Voltar para a lista</a>

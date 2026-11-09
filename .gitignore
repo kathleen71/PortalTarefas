@@ -481,3 +481,14 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 .azure
+
+# PortalTarefas: arquivos locais e dados sensiveis
+.env
+.env.*
+!.env.example
+**/*.db
+**/*.db-shm
+**/*.db-wal
+**/secrets.json
+node_modules/
+dist/

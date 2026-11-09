@@ -1,0 +1,10 @@
+@model Tarefa
+
+<div style="padding:15px; margin:12px 0; background:#f3f5f8; border-radius:6px;">
+    <h3>@Model.Titulo</h3>
+    <p>@Model.Descricao</p>
+    <p><strong>Situação:</strong> @Model.Situacao</p>
+    <a asp-controller="Home"
+       asp-action="Details"
+       asp-route-id="@Model.Id">Ver detalhes</a>
+</div>

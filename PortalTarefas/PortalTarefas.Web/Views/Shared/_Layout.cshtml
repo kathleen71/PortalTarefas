@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Portal de Tarefas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f3f5f8;
+            color: #263238;
+        }
+        header {
+            background: #24476b;
+            color: white;
+            padding: 18px 8%;
+        }
+        nav a {
+            color: white;
+            margin-right: 18px;
+            text-decoration: none;
+        }
+        main {
+            max-width: 950px;
+            margin: 30px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 8px;
+        }
+        input, textarea, select {
+            display: block;
+            width: 100%;
+            padding: 9px;
+            margin: 6px 0 15px;
+            box-sizing: border-box;
+        }
+        button, .botao {
+            background: #24476b;
+            color: white;
+            padding: 9px 15px;
+            border: 0;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .erro { color: #b3261e; }
+        .sucesso { color: #24733d; }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Portal de Tarefas</h1>
+        <nav>
+            <a asp-controller="Home" asp-action="Index">Início</a>
+            <a asp-controller="Home" asp-action="Create">Nova tarefa</a>
+        </nav>
+    </header>
+
+    <main>
+        @if (TempData["Sucesso"] != null)
+        {
+            <p class="sucesso">@TempData["Sucesso"]</p>
+        }
+
+        @RenderBody()
+    </main>
+
+    <footer>
+        Sistema desenvolvido para atividade prática de .NET
+    </footer>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
